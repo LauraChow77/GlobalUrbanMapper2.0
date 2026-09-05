@@ -135,11 +135,6 @@ def train(cfg):
     model = build_model(cfg)
     model.to(cfg.DEVICE)
 
-    # TF32 matmuls: free speedup on Ampere-class GPUs; with a fixed seed the
-    # run stays reproducible (convs already ran TF32 via the cudnn default).
-    torch.backends.cuda.matmul.allow_tf32 = True
-    torch.backends.cudnn.allow_tf32 = True
-
     optimizer = SGD(model.parameters(), lr=cfg.SOLVER.BASE_LR, momentum=cfg.SOLVER.MOMENTUM, weight_decay=cfg.SOLVER.BASE_LR_D)
     scheduler = lr_scheduler(cfg.SOLVER.LR_METHOD, cfg.SOLVER.BASE_LR, cfg.SOLVER.EPOCH, len(training_loader))
     criterions = build_criterions(cfg.LOSS.TYPE)
@@ -179,6 +174,12 @@ def main():
     # deterministic CUDA kernel in torch 2.0. warn_only keeps convs/BN
     # deterministic (via cudnn.deterministic=True) without crashing.
     torch.use_deterministic_algorithms(True, warn_only=True)
+    # Process-wide backend config, set once at startup: TF32 matmuls are a
+    # free speedup on Ampere-class GPUs and stay reproducible for a fixed
+    # seed. (cudnn.allow_tf32 is already the PyTorch default; set explicitly
+    # so a future default change cannot silently alter numerics.)
+    torch.backends.cuda.matmul.allow_tf32 = True
+    torch.backends.cudnn.allow_tf32 = True
     setup_config_logger(cfg, args)
     train(cfg)
 
