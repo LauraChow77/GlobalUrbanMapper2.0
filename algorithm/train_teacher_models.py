@@ -174,11 +174,11 @@ def main():
     # deterministic CUDA kernel in torch 2.0. warn_only keeps convs/BN
     # deterministic (via cudnn.deterministic=True) without crashing.
     torch.use_deterministic_algorithms(True, warn_only=True)
-    # Process-wide backend config, set once at startup: TF32 matmuls are a
-    # free speedup on Ampere-class GPUs and stay reproducible for a fixed
-    # seed. (cudnn.allow_tf32 is already the PyTorch default; set explicitly
-    # so a future default change cannot silently alter numerics.)
-    torch.backends.cuda.matmul.allow_tf32 = True
+    # Pin the cudnn TF32 default explicitly: convolutions have always run in
+    # TF32 (it is the PyTorch default), so this changes nothing today, but a
+    # future default flip must not silently alter numerics. TF32 matmuls
+    # (torch.backends.cuda.matmul.allow_tf32) are deliberately NOT enabled:
+    # they would change results relative to previously trained checkpoints.
     torch.backends.cudnn.allow_tf32 = True
     setup_config_logger(cfg, args)
     train(cfg)
