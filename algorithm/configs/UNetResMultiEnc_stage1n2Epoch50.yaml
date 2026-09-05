@@ -1,0 +1,7 @@
+MODEL:
+  NAME: "UNetResMultiEnc_PSPHEAD"
+SOLVER:
+  BATCH_SIZE: 8
+MODE: 'normal'
+INPUT:
+  MODE: 'FO' # 'FO', 'S2_missing', 'S1_missing'

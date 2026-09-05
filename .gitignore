@@ -1,0 +1,11 @@
+# IDE settings
+.vscode/
+
+# Python caches
+__pycache__/
+*.pyc
+*.pyo
+
+# Training/evaluation outputs (checkpoints, rasters, logs)
+algorithm/result/
+result/
