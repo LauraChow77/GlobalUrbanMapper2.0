@@ -81,8 +81,9 @@ def save_results(epoch,
     # 保存验证集miou最高的模型
     if val_indices["mIoU"] >= best_indices["val_miou"]:
         best_indices["val_miou"] = val_indices["mIoU"]
-        # 记录相应测试集结果
-        save_log(test_indices, experiment_dir, "val_max_miou_test_result", "w")
+        # 记录相应测试集结果 (None when test eval was skipped this epoch)
+        if test_indices is not None:
+            save_log(test_indices, experiment_dir, "val_max_miou_test_result", "w")
         # 记录指标验证集变化
         save_log(val_indices, experiment_dir, "val_max_miou", mode="a")
         save_model(epoch, model, scheduler, "val_max_miou", cfg)

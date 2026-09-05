@@ -19,6 +19,8 @@ import numpy as np
 
 os.environ['CUDA_VISIBLE_DEVICES'] = '0'
 os.environ["KMP_DUPLICATE_LIB_OK"] = "TRUE"
+# Required by deterministic cublas ops (must be set before the first CUDA call).
+os.environ.setdefault('CUBLAS_WORKSPACE_CONFIG', ':4096:8')
 
 
 # Teacher-model modes: full input, S2 missing, or S1 missing.
@@ -65,15 +67,15 @@ def build_dataloaders(cfg):
     training_loader = DataLoader(
         training_dataset, batch_size=cfg.SOLVER.BATCH_SIZE,
         num_workers=cfg.SOLVER.NUM_WORKERS, worker_init_fn=seed_worker,
-        shuffle=True, pin_memory=True)
+        shuffle=True, pin_memory=True, persistent_workers=True)
     val_loader = DataLoader(
         val_dataset, batch_size=cfg.SOLVER.BATCH_SIZE,
         num_workers=cfg.SOLVER.NUM_WORKERS, worker_init_fn=seed_worker,
-        shuffle=False, pin_memory=True)
+        shuffle=False, pin_memory=True, persistent_workers=True)
     test_loader = DataLoader(
         test_dataset, batch_size=cfg.SOLVER.BATCH_SIZE,
         num_workers=cfg.SOLVER.NUM_WORKERS, worker_init_fn=seed_worker,
-        shuffle=False, pin_memory=True)
+        shuffle=False, pin_memory=True, persistent_workers=True)
     return training_loader, val_loader, test_loader
 
 
@@ -133,6 +135,11 @@ def train(cfg):
     model = build_model(cfg)
     model.to(cfg.DEVICE)
 
+    # TF32 matmuls: free speedup on Ampere-class GPUs; with a fixed seed the
+    # run stays reproducible (convs already ran TF32 via the cudnn default).
+    torch.backends.cuda.matmul.allow_tf32 = True
+    torch.backends.cudnn.allow_tf32 = True
+
     optimizer = SGD(model.parameters(), lr=cfg.SOLVER.BASE_LR, momentum=cfg.SOLVER.MOMENTUM, weight_decay=cfg.SOLVER.BASE_LR_D)
     scheduler = lr_scheduler(cfg.SOLVER.LR_METHOD, cfg.SOLVER.BASE_LR, cfg.SOLVER.EPOCH, len(training_loader))
     criterions = build_criterions(cfg.LOSS.TYPE)
@@ -150,8 +157,13 @@ def train(cfg):
         val_indices = run_val(
             epoch, val_loader, model, evaluator, criterion, cfg, forward_model, writer, ["Val/loss", "Val/mIoU"])
 
-        test_indices = run_val(
-            epoch, test_loader, model, evaluator, criterion, cfg, forward_model, writer, ["Test/loss", "Test/mIoU"])
+        # Test evaluation is only meaningful when the checkpoint improves
+        # (selection is val-based anyway), so skip it on flat epochs.
+        if val_indices["mIoU"] >= best_indices["val_miou"]:
+            test_indices = run_val(
+                epoch, test_loader, model, evaluator, criterion, cfg, forward_model, writer, ["Test/loss", "Test/mIoU"])
+        else:
+            test_indices = None
 
         save_results(
             epoch, model, scheduler, "UNet_PSPHead",
@@ -163,6 +175,10 @@ def train(cfg):
 def main():
     cfg, args = parse_arguments()
     set_random_seed(cfg.SEED, deterministic=True)
+    # Strict deterministic mode is impossible here: cross_entropy_loss has no
+    # deterministic CUDA kernel in torch 2.0. warn_only keeps convs/BN
+    # deterministic (via cudnn.deterministic=True) without crashing.
+    torch.use_deterministic_algorithms(True, warn_only=True)
     setup_config_logger(cfg, args)
     train(cfg)
 
