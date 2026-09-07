@@ -215,15 +215,14 @@ def train_epochwise_st(epoch,
                 s1_topo_outputs = s1_topo_model(no_s2, s1_full, topo_full)
                 s2_topo_outputs = s2_topo_model(s2_full, no_s1, topo_full)
 
-            T_s = 1
             sup_loss = ce(partial_outputs, targets.squeeze(1))
 
             contextual_output = full_outputs
             contextual_output = torch.where(s1_topo_mask, contextual_output, s1_topo_outputs)
             contextual_output = torch.where(s2_topo_mask, contextual_output, s2_topo_outputs)
 
-            ensembled_softmax_output = F.softmax(contextual_output / T_s, dim=1)
-            log_softmax_partial_outputs = F.log_softmax(kw_outputs / T_s, dim=1)
+            ensembled_softmax_output = F.softmax(contextual_output, dim=1)
+            log_softmax_partial_outputs = F.log_softmax(kw_outputs, dim=1)
             consistent_loss = kl(log_softmax_partial_outputs, ensembled_softmax_output).mean()
 
             loss = sup_loss + consistent_loss
