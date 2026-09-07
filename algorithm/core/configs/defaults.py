@@ -56,9 +56,13 @@ _C.DATASETS.LABEL_DIR = 'D:/code/GUM_decoupling/data/urban_label_gum2p0'
 # Simulated cloud-mask rasters for the cloud-occlusion test scenarios
 _C.DATASETS.CLOUD_MASK_DIRS = CN()
 _C.DATASETS.CLOUD_MASK_DIRS.MASK_10 = 'D:/code/GUM_multimodal/data/sup/simulate_cloud_mask_0.1'
+_C.DATASETS.CLOUD_MASK_DIRS.MASK_20 = 'D:/code/GUM_multimodal/data/sup/simulate_cloud_mask_0.2'
 _C.DATASETS.CLOUD_MASK_DIRS.MASK_30 = 'D:/code/GUM_multimodal/data/sup/simulate_cloud_mask_0.3'
+_C.DATASETS.CLOUD_MASK_DIRS.MASK_40 = 'D:/code/GUM_multimodal/data/sup/simulate_cloud_mask_0.4'
 _C.DATASETS.CLOUD_MASK_DIRS.MASK_50 = 'D:/code/GUM_multimodal/data/sup/simulate_cloud_mask_0.5'
+_C.DATASETS.CLOUD_MASK_DIRS.MASK_60 = 'D:/code/GUM_multimodal/data/sup/simulate_cloud_mask_0.6'
 _C.DATASETS.CLOUD_MASK_DIRS.MASK_70 = 'D:/code/GUM_multimodal/data/sup/simulate_cloud_mask_0.7'
+_C.DATASETS.CLOUD_MASK_DIRS.MASK_80 = 'D:/code/GUM_multimodal/data/sup/simulate_cloud_mask_0.8'
 _C.DATASETS.CLOUD_MASK_DIRS.MASK_90 = 'D:/code/GUM_multimodal/data/sup/simulate_cloud_mask_0.9'
 
 _C.DATASETS.INFERENCE_DIRS = ['C:/mapping/img_clipped']
