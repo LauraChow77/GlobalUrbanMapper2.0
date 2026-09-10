@@ -4,4 +4,45 @@ SOLVER:
   BATCH_SIZE: 8
 MODE: 'normal'
 INPUT:
-  MODE: 'FO' # 'FO', 'S2_missing', 'S1_missing'
+  MODE: 'FO' # 'FO', 'S2_missing', 'S1_missing' (ignored under MODE ST)
+
+# ----------------------------------------------------------------------------
+# Dataset configuration
+# Defaults live in core/configs/defaults.py and point to the authors' machine.
+# Uncomment and edit the keys below for your own layout (partial overrides are
+# fine - unset keys keep their defaults; yacs only accepts keys that already
+# exist in the defaults). Each input sample is a 256x256, 10-channel stack
+# [S2 x4, S1 x4, slope, aspect]; see README.md for details.
+# ----------------------------------------------------------------------------
+# DATASETS:
+#   # Training: image folders and filename lists (4 parallel entries:
+#   # supervised stage 1 + 3 unsupervised stage-2 subsets)
+#   TRAIN_DIRS:
+#     - /path/to/img_stack_with_product
+#     - /path/to/img_stack_with_product
+#     - /path/to/img_stack_with_product
+#     - /path/to/img_stack_with_product
+#   TRAIN_TXT_PATHS:
+#     - /path/to/stage1_train_13728.txt
+#     - /path/to/stage2_inner_12721.txt
+#     - /path/to/stage2_middle_3889.txt
+#     - /path/to/stage2_outer_2800.txt
+#   # Validation and test
+#   VAL_DIRS: [/path/to/img_stack_with_product]
+#   VAL_TXT_PATHS: [/path/to/stage1_val_2463.txt]
+#   TEST_DIRS: [/path/to/img_stack_with_product]
+#   TEST_TXT_PATHS: [/path/to/test_2929.txt]
+#   # Urban-label rasters, shared by train / val / test
+#   LABEL_DIR: /path/to/urban_label_gum2p0
+#   # Simulated cloud masks (evaluation uses MASK_10-90; the student
+#   # augmentation uses MASK_20-80)
+#   CLOUD_MASK_DIRS:
+#     MASK_10: /path/to/simulate_cloud_mask_0.1
+#     MASK_20: /path/to/simulate_cloud_mask_0.2
+#     MASK_30: /path/to/simulate_cloud_mask_0.3
+#     MASK_40: /path/to/simulate_cloud_mask_0.4
+#     MASK_50: /path/to/simulate_cloud_mask_0.5
+#     MASK_60: /path/to/simulate_cloud_mask_0.6
+#     MASK_70: /path/to/simulate_cloud_mask_0.7
+#     MASK_80: /path/to/simulate_cloud_mask_0.8
+#     MASK_90: /path/to/simulate_cloud_mask_0.9

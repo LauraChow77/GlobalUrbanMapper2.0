@@ -12,7 +12,8 @@ and S1-missing (`S1_missing`).
 All dataset locations are under `DATASETS.*` — defaults in
 `core/configs/defaults.py`, to be overridden for your own machine in
 `configs/UNetResMultiEnc_stage1n2Epoch50.yaml` (yacs only accepts keys
-already defined in the defaults). Each input sample is a 256×256, 10-channel
+already defined in the defaults; commented-out samples for every key are
+provided in the yaml itself). Each input sample is a 256×256, 10-channel
 stack `[S2 ×4, S1 ×4, slope, aspect]` with a matching binary urban label.
 
 | Key | Description |
