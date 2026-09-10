@@ -18,7 +18,7 @@ stack `[S2 ×4, S1 ×4, slope, aspect]` with a matching binary urban label.
 
 | Key | Description |
 | --- | --- |
-| `TRAIN_DIRS` / `TRAIN_TXT_PATHS` | Image folders + filename lists for training (4 parallel entries: supervised stage 1 + 3 unsupervised stage-2 subsets) |
+| `TRAIN_DIRS` / `TRAIN_TXT_PATHS` | Image folders + filename lists for training |
 | `VAL_DIRS` / `VAL_TXT_PATHS` | Validation images + filename list |
 | `TEST_DIRS` / `TEST_TXT_PATHS` | Test images + filename list |
 | `LABEL_DIR` | Urban-label rasters, shared by train / val / test |
@@ -48,7 +48,9 @@ python train_teacher_models.py -cfg configs/UNetResMultiEnc_stage1n2Epoch50.yaml
 After the three teachers are trained:
 
 1. Set their checkpoint paths (`MODEL.TEACHER_FULL`, `MODEL.TEACHER_S1_TOPO`,
-   `MODEL.TEACHER_S2_TOPO`) and the augmentation strength
+   `MODEL.TEACHER_S2_TOPO` — commented-out samples are in the yaml, mapped to
+   the `INPUT.MODE` runs that produced each teacher) and the augmentation
+   strength
    (`SOLVER.RANDOM_MASK_RATIO`, e.g. `0.2`) in
    `configs/UNetResMultiEnc_stage1n2Epoch50.yaml`.
 

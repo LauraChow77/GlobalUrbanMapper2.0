@@ -1,5 +1,11 @@
 MODEL:
   NAME: "UNetResMultiEnc_PSPHEAD"
+  # Teacher checkpoints for student training (MODE: 'ST') - uncomment and
+  # point to the three teachers trained via INPUT.MODE FO / S2_missing /
+  # S1_missing (each teacher run's val_max_miou.pth):
+  # TEACHER_FULL: /path/to/teacher_fo.pth             # INPUT.MODE FO         (sees S2+S1+topo)
+  # TEACHER_S1_TOPO: /path/to/teacher_s2_missing.pth  # INPUT.MODE S2_missing (sees S1+topo)
+  # TEACHER_S2_TOPO: /path/to/teacher_s1_missing.pth  # INPUT.MODE S1_missing (sees S2+topo)
 SOLVER:
   BATCH_SIZE: 8
 MODE: 'normal'
