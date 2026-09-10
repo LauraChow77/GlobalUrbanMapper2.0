@@ -15,16 +15,17 @@ class Evaluator(object):
 
     def Pixel_Accuracy(self):
         """
-        计算总体精度OA
-        :return: 总体精度OA
+        Compute the overall accuracy (OA).
+        :return: overall accuracy (OA)
         """
         OA = np.diag(self.confusion_matrix).sum() / (self.confusion_matrix.sum() + eps)
         return OA
 
     def Precision_Class(self):
         """
-        计算各类的precision（即，预测为a的类中，有多少是真的a），以及平均precision
-        :return: 各类的precision和平均precision
+        Compute per-class precision (i.e., among pixels predicted as class a,
+        how many truly are a) and the mean precision.
+        :return: per-class precision and mean precision
         """
         precison_cls = np.zeros(self.num_class)
         for i in range(self.num_class):
@@ -35,8 +36,9 @@ class Evaluator(object):
 
     def Recall_Class(self):
         """
-        计算各类的recall（即，对于每个类a，有多少被预测为a），以及平均recall
-        :return: 各类的recall和平均recall
+        Compute per-class recall (i.e., for each class a, how many of its
+        pixels are predicted as a) and the mean recall.
+        :return: per-class recall and mean recall
         """
         recall_cls = np.zeros(self.num_class)
         for i in range(self.num_class):
@@ -47,8 +49,8 @@ class Evaluator(object):
 
     def Mean_Intersection_over_Union(self):
         """
-        计算各类的交并比以及平均交并比
-        :return: 各类的交并比，平均交并比
+        Compute per-class IoU and mean IoU.
+        :return: per-class IoU and mean IoU
         """
         iou_class = np.diag(self.confusion_matrix) / (
                     np.sum(self.confusion_matrix, axis=1) + np.sum(self.confusion_matrix, axis=0) -
@@ -97,7 +99,7 @@ class Evaluator(object):
 
 
 def comprehensive_evaluation(epoch, evaluator, class_names, to_print=True):
-    # 计算OA、class accuracy、precision、recall， class IoU， mIoU指标
+    # compute OA, class accuracy, precision, recall, class IoU, mIoU
     eval_keys, eval_values = Evaluator.cal_indices(evaluator, class_names)
     eval_keys = ["epoch"] + eval_keys
     eval_values = [epoch ] + eval_values
@@ -135,9 +137,9 @@ def run_val(epoch, val_loader, model, evaluator, criterion, cfg, forward_fn,
             evaluator.add_batch(target, pred)
 
     if comment[0].__contains__('Val'):
-        print("验证集集结果")
+        print("Validation results")
     elif comment[0].__contains__('Test'):
-        print("测试集集结果")
+        print("Test results")
 
     val_indices = comprehensive_evaluation(epoch, evaluator, cfg.DATASETS.CLASS_NAMES)
     val_indices["loss"] = val_loss / len(val_loader)

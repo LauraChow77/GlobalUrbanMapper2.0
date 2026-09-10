@@ -5,8 +5,8 @@ from core.utils.pretty_format import join_str
 
 def get_curr_time():
     """
-    获取当前时间
-    :return: 当前时间的str
+    Get the current time.
+    :return: current time as a string
     """
     lt = time.localtime(time.time())
     yyyy = str(lt.tm_year)

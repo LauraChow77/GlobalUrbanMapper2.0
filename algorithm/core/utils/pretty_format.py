@@ -1,20 +1,20 @@
 def join_str(joiner="-", content_list=[]):
     """
-    使用joiner连接content_list内的所有内容
-    :param joiner: 连接符，默认为"-"
-    :param content_list: 待连接的内容list，每个元素需为str
-    :return: 用joiner连接好的content_list
+    Join all items of content_list with the joiner.
+    :param joiner: the joiner, "-" by default
+    :param content_list: list of items to join; each item must be a str
+    :return: content_list joined with the joiner
     """
     return joiner.join(content_list)
 
 
 def organize_info(key=[], value=[]):
     """
-    重新组织信息成以下格式：
+    Reorganize information into the following format:
     [** {key} **]: {value}
-    :param key: 索引名
-    :param value: 每个索引对应的值
-    :return: 组织好的str
+    :param key: index names
+    :param value: the value corresponding to each index
+    :return: the organized string
     """
     assert len(key) == len(value)
 

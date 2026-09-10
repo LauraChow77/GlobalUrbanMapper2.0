@@ -9,7 +9,7 @@ from core.utils.pretty_format import join_str, organize_info
 
 
 def parse_arguments():
-    #<-------------------设置命令行参数------------------->#
+    #<------------------- set up command-line arguments ------------------->#
     parser = argparse.ArgumentParser(description="GUM")
     parser.add_argument("-cfg",
                         "--config-file",
@@ -17,28 +17,28 @@ def parse_arguments():
                         metavar="FILE",
                         help="path to config file",
                         type=str,
-                        ) # 传入配置文件路径
+                        )  # pass the config file path
     parser.add_argument("opts",
                         help="Modify config options using the command-line",
                         default=None,
                         nargs=argparse.REMAINDER
-                        )  # 以字典形式传入参数
-    parser.add_argument("--local_rank", type=int, default=0) # 本地序号
+                        )  # pass options as key-value pairs
+    parser.add_argument("--local_rank", type=int, default=0)  # local rank
     parser.add_argument("--skip-test",
                         dest="skip_test",
                         help="Do not test the final model",
                         action="store_true",
-                        ) # 决定是否测试
+                        )  # whether to run the final test
     args = parser.parse_args()
 
-    # <-------------------设置分布式训练------------------->#
-    num_gpus = int(os.environ["WORLD_SIZE"]) if "WORLD_SIZE" in os.environ else 1 # 进程总数，即卡数
+    # <------------------- set up distributed training ------------------->#
+    num_gpus = int(os.environ["WORLD_SIZE"]) if "WORLD_SIZE" in os.environ else 1  # total processes, i.e. GPU count
     args.distributed = num_gpus > 1
     if args.distributed:
         torch.cuda.set_device(args.local_rank)
         torch.distributed.init_process_group(backend="nccl", init_method="env://")
 
-    # <-------------------更新并固定配置信息------------------->#
+    # <------------------- merge, fix, and finalize the configuration ------------------->#
     cfg.merge_from_file(args.config_file)
     cfg.merge_from_list(args.opts)
 
@@ -73,32 +73,32 @@ def save_results(epoch,
                  best_indices, val_indices, test_indices,
                  experiment_dir,
                  cfg):
-    # 保存验证集结果
+    # save validation results
     with open(os.path.join(experiment_dir, "log.txt"), "a") as f:
         f.write(organize_info(list(val_indices.keys()), list(val_indices.values())))
         f.write("\n")
 
-    # 保存验证集miou最高的模型
+    # save the model with the best validation mIoU
     if val_indices["mIoU"] >= best_indices["val_miou"]:
         best_indices["val_miou"] = val_indices["mIoU"]
-        # 记录相应测试集结果 (None when test eval was skipped this epoch)
+        # record the corresponding test results (None when test eval was skipped this epoch)
         if test_indices is not None:
             save_log(test_indices, experiment_dir, "val_max_miou_test_result", "w")
-        # 记录指标验证集变化
+        # log the per-epoch validation metric changes
         save_log(val_indices, experiment_dir, "val_max_miou", mode="a")
         save_model(epoch, model, scheduler, "val_max_miou", cfg)
 
     save_model(epoch, model, scheduler, "latest", cfg)
 
 
-# 保存txt结果
+# save results to a txt file
 def save_log(indices, experiment_dir, file_name, mode="a"):
     with open(os.path.join(experiment_dir, file_name + ".txt"), mode) as f:
         f.write(organize_info(list(indices.keys()), list(indices.values())))
         f.write("\n")
 
 
-# 保存模型
+# save model
 def save_model(epoch, model, scheduler, file_name, cfg):
     model_path = os.path.join(cfg.EXPERIMENT_DIR, file_name + ".pth")
     model_state = {"epoch": epoch + 1,

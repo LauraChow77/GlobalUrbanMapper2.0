@@ -147,7 +147,7 @@ def test(model, cfg):
 
     evaluator_metrics = {}
     for key, evaluator in evaluators.items():
-        print("测试结果", key)
+        print("Test results", key)
         test_indices = comprehensive_evaluation(0, evaluator, cfg.DATASETS.CLASS_NAMES)
         test_indices["loss"] = loss_variables[key.replace('evaluator', 'outputs')] / len(test_loader)
         evaluator_metrics[key] = test_indices
