@@ -9,3 +9,6 @@ __pycache__/
 # Training/evaluation outputs (checkpoints, rasters, logs)
 algorithm/result/
 result/
+
+# Machine-specific local configs (real dataset paths etc.)
+*.local.yaml

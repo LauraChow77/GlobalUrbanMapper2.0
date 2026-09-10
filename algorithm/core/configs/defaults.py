@@ -33,39 +33,42 @@ _C.LOSS = CN()
 _C.LOSS.TYPE = 'ce'
 
 # Datasets
+# NOTE: the paths below are generic placeholders. Override them for your own
+# machine in configs/UNetResMultiEnc_stage1n2Epoch50.yaml (commented samples
+# are provided there), or copy that file to a gitignored *.local.yaml.
 _C.DATASETS = CN()
 _C.DATASETS.CLASS_NAMES = ["non-urban", "urban"]
 _C.DATASETS.TRAIN_DIRS = [
-    'D:/code/GUM_multimodal/data/sup/img_stack_with_product',
-    'D:/code/GUM_multimodal/data/unsup/img_stack_with_product',
-    'D:/code/GUM_multimodal/data/unsup/img_stack_with_product',
-    'D:/code/GUM_multimodal/data/unsup/img_stack_with_product',
+    '/path/to/train_images',
+    '/path/to/train_images',
+    '/path/to/train_images',
+    '/path/to/train_images',
 ]
 _C.DATASETS.TRAIN_TXT_PATHS = [
-    'D:/code/GUM_decoupling/data/stage1_train_13728.txt',
-    'D:/code/GUM_decoupling/data/stage2_inner_12721.txt',
-    'D:/code/GUM_decoupling/data/stage2_middle_3889.txt',
-    'D:/code/GUM_decoupling/data/stage2_outer_2800.txt',
+    '/path/to/train_files_1.txt',
+    '/path/to/train_files_2.txt',
+    '/path/to/train_files_3.txt',
+    '/path/to/train_files_4.txt',
 ]
-_C.DATASETS.VAL_DIRS = ['D:/code/GUM_multimodal/data/sup/img_stack_with_product']
-_C.DATASETS.VAL_TXT_PATHS = ['D:/code/GUM_decoupling/data/stage1_val_2463.txt']
-_C.DATASETS.TEST_DIRS = ['D:/code/GUM_multimodal/data/sup/img_stack_with_product']
-_C.DATASETS.TEST_TXT_PATHS = ['D:/code/GUM_decoupling/data/test_2929.txt']
-_C.DATASETS.LABEL_DIR = 'D:/code/GUM_decoupling/data/urban_label_gum2p0'
+_C.DATASETS.VAL_DIRS = ['/path/to/val_images']
+_C.DATASETS.VAL_TXT_PATHS = ['/path/to/val_files.txt']
+_C.DATASETS.TEST_DIRS = ['/path/to/test_images']
+_C.DATASETS.TEST_TXT_PATHS = ['/path/to/test_files.txt']
+_C.DATASETS.LABEL_DIR = '/path/to/urban_labels'
 
 # Simulated cloud-mask rasters for the cloud-occlusion test scenarios
 _C.DATASETS.CLOUD_MASK_DIRS = CN()
-_C.DATASETS.CLOUD_MASK_DIRS.MASK_10 = 'D:/code/GUM_multimodal/data/sup/simulate_cloud_mask_0.1'
-_C.DATASETS.CLOUD_MASK_DIRS.MASK_20 = 'D:/code/GUM_multimodal/data/sup/simulate_cloud_mask_0.2'
-_C.DATASETS.CLOUD_MASK_DIRS.MASK_30 = 'D:/code/GUM_multimodal/data/sup/simulate_cloud_mask_0.3'
-_C.DATASETS.CLOUD_MASK_DIRS.MASK_40 = 'D:/code/GUM_multimodal/data/sup/simulate_cloud_mask_0.4'
-_C.DATASETS.CLOUD_MASK_DIRS.MASK_50 = 'D:/code/GUM_multimodal/data/sup/simulate_cloud_mask_0.5'
-_C.DATASETS.CLOUD_MASK_DIRS.MASK_60 = 'D:/code/GUM_multimodal/data/sup/simulate_cloud_mask_0.6'
-_C.DATASETS.CLOUD_MASK_DIRS.MASK_70 = 'D:/code/GUM_multimodal/data/sup/simulate_cloud_mask_0.7'
-_C.DATASETS.CLOUD_MASK_DIRS.MASK_80 = 'D:/code/GUM_multimodal/data/sup/simulate_cloud_mask_0.8'
-_C.DATASETS.CLOUD_MASK_DIRS.MASK_90 = 'D:/code/GUM_multimodal/data/sup/simulate_cloud_mask_0.9'
+_C.DATASETS.CLOUD_MASK_DIRS.MASK_10 = '/path/to/cloud_masks_10'
+_C.DATASETS.CLOUD_MASK_DIRS.MASK_20 = '/path/to/cloud_masks_20'
+_C.DATASETS.CLOUD_MASK_DIRS.MASK_30 = '/path/to/cloud_masks_30'
+_C.DATASETS.CLOUD_MASK_DIRS.MASK_40 = '/path/to/cloud_masks_40'
+_C.DATASETS.CLOUD_MASK_DIRS.MASK_50 = '/path/to/cloud_masks_50'
+_C.DATASETS.CLOUD_MASK_DIRS.MASK_60 = '/path/to/cloud_masks_60'
+_C.DATASETS.CLOUD_MASK_DIRS.MASK_70 = '/path/to/cloud_masks_70'
+_C.DATASETS.CLOUD_MASK_DIRS.MASK_80 = '/path/to/cloud_masks_80'
+_C.DATASETS.CLOUD_MASK_DIRS.MASK_90 = '/path/to/cloud_masks_90'
 
-_C.DATASETS.INFERENCE_DIRS = ['C:/mapping/img_clipped']
+_C.DATASETS.INFERENCE_DIRS = ['/path/to/inference_images']
 _C.DATASETS.INFERENCE_TXT_PATHS = ['None']
 
 # Solver
