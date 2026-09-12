@@ -9,7 +9,8 @@ and S1-missing (`S1_missing`).
 
 ## Setup
 
-Requires Python 3.11 and a CUDA 11.8 GPU (tested on Windows):
+Requires Python 3.11 and a CUDA 11.8 GPU (tested on Windows; see the
+header of `requirements.txt` for a conda environment recipe):
 
 ```bash
 pip install -r requirements.txt
