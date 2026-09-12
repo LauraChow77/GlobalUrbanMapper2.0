@@ -7,6 +7,14 @@ for Sentinel-2, Sentinel-1, and topography. Three teachers are trained, one
 per modality availability: full observation (`FO`), S2-missing (`S2_missing`),
 and S1-missing (`S1_missing`).
 
+## Setup
+
+Requires Python 3.11 and a CUDA 11.8 GPU (tested on Windows):
+
+```bash
+pip install -r requirements.txt
+```
+
 ## Dataset configuration
 
 All dataset locations are under `DATASETS.*` — defaults in
