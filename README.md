@@ -13,9 +13,20 @@ As a deep learning model, GUM 2.0 has demonstrated its effectiveness in various 
 
 ## Repository Overview: Structure and Components
 This repository is organized into three primary folders:
-- **`gee_code`**: Contains data preprocessing scripts implemented using Google Earth Engine.
-- **`algorithm`**: Houses the code for the incomplete‑learning algorithm.
-- **`mapping`**: Provides detailed guidelines for using GUM 2.0 to perform urban mapping in Google Colab, enabling users without local GPU resources to generate urban maps independently.
+- **`gee_code`**: data preprocessing scripts implemented in Google Earth Engine (see `gee_code/README.md`).
+- **`algorithm`**: houses the code for the incomplete-learning algorithm, including model training and evaluation (see `algorithm/README.md`; Python 3.11 with a CUDA 11.8 GPU required).
+- **`mapping`**: a Colab notebook (`gum2.0_mapping.ipynb`) for running GUM 2.0 predictions without a local GPU (see `mapping/README.md`).
+
+## Trained model
+The GUM 2.0 checkpoint is available on
+[Google Drive](https://drive.google.com/file/d/1TjpcohwZzzij_Gbm-NhY5-1gyNTlOCan/view?usp=drive_link).
+See `mapping/README.md` for the expected file layout and prediction steps, and
+`algorithm/README.md` for training and evaluation.
+
+## Citation
+If you use GUM 2.0 in your research, please cite:
+
+> Zhou, Y., & Weng, Q. (2026). Advancing global urban mapping with multimodal robustness and versatile applications. *ISPRS Journal of Photogrammetry and Remote Sensing*, 242, 131-155.
 
 ## Contact Information
 
